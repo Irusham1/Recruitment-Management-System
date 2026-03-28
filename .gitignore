@@ -1,0 +1,3 @@
+# Uploaded CV files
+recruitment_system/uploads/cvs/*
+!recruitment_system/uploads/cvs/.gitkeep
