@@ -24,10 +24,10 @@
     - Result: ✅ SUCCESS - Java 25.0.2 LTS and Maven 3.9.14 installed
     - Notes: Maven uses system default JDK unless JAVA_HOME is set per step command.
   - **Deferred Work**: None
-  - **Commit**: Pending
+  - **Commit**: 8d76ca7 - Step 1: Setup Environment - Compile: N/A
 
 - **Step 2: Setup Baseline**
-  - **Status**: 🔘 Not Started
+  - **Status**: ⏳ In Progress
   - **Changes Made**:
     - None
   - **Review Code Changes**:
