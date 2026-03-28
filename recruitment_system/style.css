@@ -969,8 +969,6 @@ ul { list-style: none; }
   max-width: 800px;
 }
 
-.job-form {}
-
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
