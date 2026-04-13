@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TalentFlow — HR Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Animated grid background -->
+<div class="grid-bg" aria-hidden="true">
+  <div class="grid-lines"></div>
+  <div class="accent-line accent-line-1"></div>
+  <div class="accent-line accent-line-2"></div>
+  <div class="accent-line accent-line-3"></div>
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">⚡</span>
+    <span class="logo-text">TalentFlow</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-view="dashboard">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" data-view="jobs">
+      <span class="nav-icon">💼</span>
+      <span>Job Listings</span>
+    </a>
+    <a href="#" class="nav-item" data-view="applications">
+      <span class="nav-icon">📋</span>
+      <span>Applications</span>
+    </a>
+    <a href="#" class="nav-item" data-view="candidates">
+      <span class="nav-icon">👥</span>
+      <span>Candidates</span>
+    </a>
+    <a href="#" class="nav-item" data-view="post-job">
+      <span class="nav-icon">➕</span>
+      <span>Post a Job</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-avatar">HR</div>
+    <div class="user-info">
+      <div class="user-name">HR Manager</div>
+      <div class="user-role">Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile menu toggle -->
+<button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+
+<!-- Main content -->
+<main class="main-content">
+
+  <!-- ========== DASHBOARD VIEW ========== -->
+  <section class="view active" id="view-dashboard">
+
+    <!-- Hero / Header -->
+    <header class="hero-section">
+      <div class="hero-text">
+        <div class="hero-badge animate-fade-in">👋 Welcome back</div>
+        <h1 class="hero-title animate-slide-up">Recruitment <span class="gradient-text">Dashboard</span></h1>
+        <p class="hero-sub animate-fade-in-delay">Track your hiring pipeline and manage talent efficiently.</p>
+      </div>
+      <div class="hero-actions animate-fade-in-delay2">
+        <button class="btn btn-primary" id="btnRefresh">
+          <span class="btn-icon">🔄</span> Refresh
+        </button>
+        <a href="apply.html" target="_blank" class="btn btn-outline">
+          <span class="btn-icon">🔗</span> Apply Page
+        </a>
+      </div>
+    </header>
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <div class="stat-card animate-card" style="--delay:0.1s">
+        <div class="stat-icon stat-icon-blue">💼</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statActiveJobs">—</div>
+          <div class="stat-label">Active Jobs</div>
+        </div>
+        <div class="stat-trend up">▲ 12%</div>
+        <div class="stat-border-glow"></div>
+      </div>
+      <div class="stat-card animate-card" style="--delay:0.2s">
+        <div class="stat-icon stat-icon-cyan">📋</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statApplications">—</div>
+          <div class="stat-label">Total Applications</div>
+        </div>
+        <div class="stat-trend up">▲ 8%</div>
+        <div class="stat-border-glow"></div>
+      </div>
+      <div class="stat-card animate-card" style="--delay:0.3s">
+        <div class="stat-icon stat-icon-purple">⭐</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statShortlisted">—</div>
+          <div class="stat-label">Shortlisted</div>
+        </div>
+        <div class="stat-trend up">▲ 5%</div>
+        <div class="stat-border-glow"></div>
+      </div>
+      <div class="stat-card animate-card" style="--delay:0.4s">
+        <div class="stat-icon stat-icon-green">✅</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statHired">—</div>
+          <div class="stat-label">Hired This Month</div>
+        </div>
+        <div class="stat-trend up">▲ 20%</div>
+        <div class="stat-border-glow"></div>
+      </div>
+    </div>
+
+    <!-- Pipeline Chart -->
+    <div class="chart-section animate-card" style="--delay:0.5s">
+      <div class="section-header">
+        <h2 class="section-title">Recruitment <span class="gradient-text">Pipeline</span></h2>
+        <div class="section-badge">Live</div>
+      </div>
+      <div class="pipeline-chart" id="pipelineChart">
+        <!-- Bars rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Recent Jobs + Applications -->
+    <div class="dashboard-grid-2">
+      <div class="panel animate-card" style="--delay:0.6s">
+        <div class="section-header">
+          <h2 class="section-title">Recent Jobs</h2>
+          <button class="btn btn-sm btn-outline" data-view-nav="jobs">View All</button>
+        </div>
+        <ul class="recent-list" id="recentJobsList"></ul>
+      </div>
+      <div class="panel animate-card" style="--delay:0.7s">
+        <div class="section-header">
+          <h2 class="section-title">Recent Applications</h2>
+          <button class="btn btn-sm btn-outline" data-view-nav="applications">View All</button>
+        </div>
+        <ul class="recent-list" id="recentAppsList"></ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== JOB LISTINGS VIEW ========== -->
+  <section class="view" id="view-jobs">
+    <header class="page-header">
+      <h1 class="page-title">Job <span class="gradient-text">Listings</span></h1>
+      <div class="header-actions">
+        <div class="filter-group">
+          <select id="jobStatusFilter" class="select-input">
+            <option value="">All Statuses</option>
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" data-view-nav="post-job">➕ Post Job</button>
+      </div>
+    </header>
+    <div class="jobs-grid" id="jobsGrid"></div>
+  </section>
+
+  <!-- ========== APPLICATIONS VIEW ========== -->
+  <section class="view" id="view-applications">
+    <header class="page-header">
+      <h1 class="page-title">Applications <span class="gradient-text">Pipeline</span></h1>
+      <div class="header-actions">
+        <div class="filter-group">
+          <select id="appStageFilter" class="select-input">
+            <option value="">All Stages</option>
+            <option value="Applied">Applied</option>
+            <option value="Screening">Screening</option>
+            <option value="Interview">Interview</option>
+            <option value="Offer">Offer</option>
+            <option value="Hired">Hired</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        <input type="text" id="appSearch" class="search-input" placeholder="🔍 Search applications…" />
+      </div>
+    </header>
+    <div class="table-wrapper">
+      <table class="data-table" id="applicationsTable">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>Stage</th>
+            <th>Applied</th>
+            <th>CV</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="applicationsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== CANDIDATES VIEW ========== -->
+  <section class="view" id="view-candidates">
+    <header class="page-header">
+      <h1 class="page-title">Candidates <span class="gradient-text">Database</span></h1>
+      <div class="header-actions">
+        <input type="text" id="candidateSearch" class="search-input" placeholder="🔍 Search candidates…" />
+      </div>
+    </header>
+    <div class="candidates-grid" id="candidatesGrid"></div>
+  </section>
+
+  <!-- ========== POST A JOB VIEW ========== -->
+  <section class="view" id="view-post-job">
+    <header class="page-header">
+      <h1 class="page-title">Post a <span class="gradient-text">Job</span></h1>
+    </header>
+    <div class="form-panel">
+      <form id="postJobForm" class="job-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="jobTitle">Job Title *</label>
+            <input type="text" id="jobTitle" class="form-input" placeholder="e.g. Senior Developer" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jobDept">Department *</label>
+            <input type="text" id="jobDept" class="form-input" placeholder="e.g. Engineering" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jobLocation">Location *</label>
+            <input type="text" id="jobLocation" class="form-input" placeholder="e.g. Colombo" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="jobType">Job Type *</label>
+            <select id="jobType" class="form-input" required>
+              <option value="">Select type</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+          <div class="form-group form-group-full">
+            <label class="form-label" for="jobDesc">Job Description *</label>
+            <textarea id="jobDesc" class="form-input form-textarea" placeholder="Describe the role, responsibilities, and requirements…" required></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <span class="btn-icon">🚀</span> Post Job
+          </button>
+          <button type="button" class="btn btn-outline btn-lg" id="btnSaveDraft">
+            <span class="btn-icon">💾</span> Save Draft
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- CV Viewer Modal -->
+<div class="modal-overlay" id="cvModal" role="dialog" aria-modal="true" aria-labelledby="cvModalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="cvModalTitle">Candidate CV</h3>
+      <button class="modal-close" id="cvModalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="cvModalBody"></div>
+    <div class="modal-footer">
+      <div class="stage-update-group">
+        <label class="form-label">Update Stage:</label>
+        <select id="stageSelect" class="select-input">
+          <option value="Applied">Applied</option>
+          <option value="Screening">Screening</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+          <option value="Hired">Hired</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <button class="btn btn-primary" id="btnUpdateStage">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

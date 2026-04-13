@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply — TalentFlow</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Animated background -->
+<div class="grid-bg" aria-hidden="true">
+  <div class="grid-lines"></div>
+  <div class="accent-line accent-line-1"></div>
+  <div class="accent-line accent-line-2"></div>
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+</div>
+
+<div class="apply-page">
+  <div class="apply-card">
+
+    <!-- Logo -->
+    <div class="apply-logo">
+      <span style="font-size:28px;filter:drop-shadow(0 0 8px #00d2ff)">⚡</span>
+      <span style="font-size:20px;font-weight:700;background:linear-gradient(135deg,#0057ff,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TalentFlow</span>
+    </div>
+
+    <h1 class="apply-title">Submit Your Application</h1>
+    <p class="apply-sub">Join our team — complete the form below and attach your CV.</p>
+
+    <!-- Job selector (populated from available jobs) -->
+    <form id="applyForm" enctype="multipart/form-data" novalidate>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label" for="applyJob">Position *</label>
+        <select id="applyJob" name="job_id" class="form-input" required>
+          <option value="">Select a position…</option>
+          <option value="1">Senior Full Stack Developer — Engineering</option>
+          <option value="2">UI/UX Designer — Design</option>
+          <option value="3">Data Analyst — Analytics</option>
+          <option value="5">Junior React Developer — Engineering</option>
+          <option value="7">DevOps Engineer — Engineering</option>
+          <option value="8">Product Manager — Product</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label" for="applyName">Full Name *</label>
+        <input type="text" id="applyName" name="candidate_name" class="form-input"
+               placeholder="Your full name" required autocomplete="name" />
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label" for="applyEmail">Email Address *</label>
+        <input type="email" id="applyEmail" name="candidate_email" class="form-input"
+               placeholder="you@example.com" required autocomplete="email" />
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label" for="applyPhone">Phone Number</label>
+        <input type="tel" id="applyPhone" name="candidate_phone" class="form-input"
+               placeholder="+94 77 123 4567" autocomplete="tel" />
+      </div>
+
+      <!-- CV Upload -->
+      <div class="form-group" style="margin-bottom:24px">
+        <label class="form-label">CV / Resume *</label>
+        <div class="file-upload-area" id="fileDropZone">
+          <div class="file-upload-icon">📎</div>
+          <p><strong>Drag & drop</strong> your CV here, or <strong>click to browse</strong></p>
+          <p style="font-size:12px;margin-top:6px;opacity:0.7">PDF or Word (.doc/.docx) · max 5 MB</p>
+          <input type="file" id="cvFile" name="cv" accept=".pdf,.doc,.docx"
+                 style="position:absolute;inset:0;opacity:0;cursor:pointer" required />
+        </div>
+        <div id="fileInfo" style="font-size:13px;color:var(--accent-cyan);margin-top:8px;display:none"></div>
+      </div>
+
+      <div id="applyError" class="form-error" style="display:none;color:var(--accent-red);font-size:13px;margin-bottom:12px"></div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center" id="applySubmit">
+        <span class="btn-icon">🚀</span> Submit Application
+      </button>
+
+    </form>
+
+    <!-- Success state (hidden by default) -->
+    <div id="applySuccess" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:52px;margin-bottom:16px;animation:cardEntrance 0.5s ease both">🎉</div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Application Submitted!</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.6">
+        Thank you for applying. Our HR team will be in touch shortly.
+      </p>
+      <a href="index.html" class="btn btn-outline" style="margin-top:20px">
+        ← Back to Dashboard
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Standalone apply page script (no PHP dependency for demo)
+(function () {
+  'use strict';
+
+  const dropZone  = document.getElementById('fileDropZone');
+  const fileInput = document.getElementById('cvFile');
+  const fileInfo  = document.getElementById('fileInfo');
+
+  // File drag-and-drop
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) setFile(file);
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+  });
+
+  function setFile(file) {
+    const maxSize = 5 * 1024 * 1024;
+    const allowed = ['application/pdf',
+                     'application/msword',
+                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!allowed.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
+      fileInfo.style.color = 'var(--accent-red)';
+      fileInfo.textContent = '⚠️ Only PDF and Word documents are accepted.';
+      fileInfo.style.display = 'block';
+      return;
+    }
+    if (file.size > maxSize) {
+      fileInfo.style.color = 'var(--accent-red)';
+      fileInfo.textContent = '⚠️ File size must be under 5 MB.';
+      fileInfo.style.display = 'block';
+      return;
+    }
+    fileInfo.style.color = 'var(--accent-cyan)';
+    fileInfo.textContent = `✅ ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+    fileInfo.style.display = 'block';
+  }
+
+  // Form submission (demo — shows success state)
+  document.getElementById('applyForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const err = document.getElementById('applyError');
+    err.style.display = 'none';
+
+    const job   = document.getElementById('applyJob').value;
+    const name  = document.getElementById('applyName').value.trim();
+    const email = document.getElementById('applyEmail').value.trim();
+
+    if (!job || !name || !email) {
+      err.textContent = '⚠️ Please fill in all required fields.';
+      err.style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('applySubmit');
+    btn.classList.add('loading');
+    btn.querySelector('.btn-icon').textContent = '⏳';
+
+    // Simulate API call
+    setTimeout(() => {
+      document.getElementById('applyForm').style.display = 'none';
+      document.getElementById('applySuccess').style.display = 'block';
+    }, 1200);
+  });
+})();
+</script>
+</body>
+</html>
